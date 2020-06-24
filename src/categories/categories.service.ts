@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { Category } from './category.entity';
 import { CategoryDto } from './category.dto';
 
@@ -38,14 +38,14 @@ export class CategoriesService {
     categoryDto: CategoryDto): Promise<void>{
     const result = await this.categoryRepository.update(id, categoryDto); 
     if (result.affected === 0) {
-      throw new HttpException('Utilisateur non trouvé', HttpStatus.NOT_FOUND)
+      throw new HttpException('Catégorie non trouvée', HttpStatus.NOT_FOUND)
     }
   }
 
   async delete(id:number): Promise<void>{
-    const result = await this.categoryRepository.delete(id);
-    if (result.affected === 0) {
-      throw new HttpException('Utilisateur non trouvé', HttpStatus.NOT_FOUND)
+    const deleteResult : DeleteResult = await this.categoryRepository.delete(id);
+    if (deleteResult.affected === 0) {
+      throw new HttpException('Catégorie non trouvée', HttpStatus.NOT_FOUND)
     }
   }
 }

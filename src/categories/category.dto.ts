@@ -1,19 +1,21 @@
-import { IsNotEmpty, IsString, IsAlpha, MaxLength, IsNumber, IsOptional } from 'class-validator';
+import { IsNotEmpty, IsString, IsAlpha, MaxLength, IsNumber, IsOptional, IsAlphanumeric } from 'class-validator';
+import { CategoryData } from './category.entity';
 
 export class CategoryDto {
   @IsString()
-  @IsAlpha()
   @IsNotEmpty()
   @MaxLength(50)
   name: string;
 
   @IsString()
-  @IsAlpha()
   @IsOptional()
-  @MaxLength(50)
+  @MaxLength(200)
   description: string;
 
   @IsNumber()
   @IsNotEmpty()
   persons: number;
+
+  @IsOptional()
+  data: CategoryData;
 }

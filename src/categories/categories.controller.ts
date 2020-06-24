@@ -33,7 +33,7 @@ export class CategoriesController {
             return this.categorydb.update(id,categoryDto);
   }
 
-  @Delete('id')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id',ParseIntPipe) id: number): Promise<void> {
     return this.categorydb.delete(id);
