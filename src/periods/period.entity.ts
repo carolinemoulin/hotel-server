@@ -1,6 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
 import { Category } from 'src/categories/category.entity';
 
+export class PeriodData {
+  prices: number[]; // du dimanche au samedi
+}
+
 @Entity()
 export class Period {
 
@@ -11,7 +15,7 @@ export class Period {
   @JoinColumn({ name: 'category_id' })
   category: Category;
 
-  @Column({ name: 'category_id '})
+  @Column({ name: 'category_id'})
   categoryId: number;
 
   @Column({name: 'start_date', type: 'date'})
@@ -20,4 +24,8 @@ export class Period {
   @Column({name: 'end_date', type: 'date'})
   endDate: string; //'202-06-24'
 
+  @Column({type: 'jsonb'})
+  data: PeriodData;
+
+  
 }
