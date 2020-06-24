@@ -1,10 +1,11 @@
-import { Controller, Get, ParseIntPipe, Param, Post, Put, Delete, HttpCode, HttpStatus, Body, Query } from '@nestjs/common';
+import { Controller, Get, ParseIntPipe, Param, Post, Put, Delete, HttpCode, HttpStatus, Body, Query, ValidationPipe, UsePipes, HttpException } from '@nestjs/common';
 import { PeriodsService } from './periods.service';
 import { PeriodDto } from './period.dto';
 import { Period } from './period.entity';
 import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('admin/periods')
+@UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true, transform: true}))
 export class PeriodsController {
 
   constructor(private periodsSrv: PeriodsService) {
@@ -28,6 +29,9 @@ export class PeriodsController {
 
   @Post()
   create(@Body() periodDto: PeriodDto): Promise<Period> {
+    if (periodDto.startDate > periodDto.endDate) {
+      throw new HttpException('La date de fin doit être après la date de début', HttpStatus.BAD_REQUEST)
+    }
     return this.periodsSrv.create(periodDto);
   }
 
@@ -35,12 +39,15 @@ export class PeriodsController {
   @HttpCode(HttpStatus.NO_CONTENT)
   update(@Param('id',ParseIntPipe) id: number,
           @Body() periodDto : PeriodDto): Promise<void> {
+            if (periodDto.startDate > periodDto.endDate) {
+              throw new HttpException('La date de fin doit être après la date de début', HttpStatus.BAD_REQUEST)
+            }
             return this.periodsSrv.update(id,periodDto);
   }
 
- /* @Delete(':id')
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   delete(@Param('id',ParseIntPipe) id: number): Promise<void> {
     return this.periodsSrv.delete(id);
-  }*/
+  }
 }

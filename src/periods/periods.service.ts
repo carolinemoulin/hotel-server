@@ -1,6 +1,6 @@
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { Period } from './period.entity';
-import { Repository } from 'typeorm';
+import { Repository, DeleteResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PeriodDto } from './period.dto';
 
@@ -23,7 +23,7 @@ export class PeriodsService {
         query = query.andWhere('period.categoryId = :catId', {catId: options.categoryId})
       }
     const allPeriods: Period[] = await query.getMany();
-    return allPeriods.filter(period => options?.ignorePeriodId && period.id !== options.ignorePeriodId);
+    return allPeriods.filter(period => !options?.ignorePeriodId || period.id !== options.ignorePeriodId);
   }
 
   async readOne(id: number): Promise<Period> {
@@ -63,10 +63,10 @@ export class PeriodsService {
     }
   }
 
-/*  async delete(id:number): Promise<void>{
+  async delete(id:number): Promise<void>{
     const deleteResult : DeleteResult = await this.periodRepository.delete(id);
     if (deleteResult.affected === 0) {
       throw new HttpException('Période non trouvée', HttpStatus.NOT_FOUND)
     }
-  }*/
+  }
 }
