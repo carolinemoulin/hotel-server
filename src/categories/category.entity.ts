@@ -20,6 +20,10 @@ export class Category {
   persons: number;
 
   @Column({type: 'jsonb', nullable: true})
-  private data: CategoryData;
+  data: CategoryData;
+
+  get rooms(): string[] {
+    return this.data?.rooms || [] ; // si data est undefined rooms renvoie un tableau vide
+  }
 
 }
