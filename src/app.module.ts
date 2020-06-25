@@ -2,13 +2,14 @@ import { Module } from '@nestjs/common';
 import { CategoriesModule } from './shared/categories/categories.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Category } from './shared/categories/category.entity';
-import { PeriodsModule } from './shared/periods/periods.module';
 import { Period } from './shared/periods/period.entity';
 import { AdminModule } from './admin/admin.module';
+import { Reservation } from './shared/reservations/reservation.entity';
+import { BookingModule } from './booking/booking.module';
 
 @Module({
   imports: [
-    CategoriesModule,
+  CategoriesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'localhost',
@@ -17,10 +18,11 @@ import { AdminModule } from './admin/admin.module';
       password: 'azerty',
       database: 'hoteldb',
       schema: 'hotel',
-      entities: [Category, Period],
+      entities: [Category, Period, Reservation],
       synchronize: true,
     }),
-    AdminModule
+    AdminModule,
+    BookingModule,
   ],
 })
 export class AppModule {}
