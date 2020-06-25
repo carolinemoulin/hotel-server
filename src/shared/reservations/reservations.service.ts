@@ -7,6 +7,7 @@ import { CategoriesService } from '../categories/categories.service';
 import { Period } from '../periods/period.entity';
 import { Category } from '../categories/category.entity';
 import { DateUtil } from 'src/date.util';
+import { AvailabilityResultDto } from './availability-result.dto';
 
 @Injectable()
 export class ReservationsService {
@@ -30,9 +31,10 @@ export class ReservationsService {
       return query.getMany();
   }
 
-  async searchAvailable(stay: Stay, persons: number){
+  async searchAvailable(stay: Stay, persons: number): Promise<AvailabilityResultDto>{
     //catégories de chambres
-    const categories: Category[] = await this.categoriesSrv.readAll(); 
+    const categories: Category[] = (await this.categoriesSrv.readAll())
+      .filter(category => category.persons >= persons); 
     //périodes de prix qui chevauchent les dates du séjour
     const periods: Period[] = await this.periodsSrv.searchAll(stay);
     //réservations qui chevauchent les dates du séjour
@@ -42,7 +44,7 @@ export class ReservationsService {
       const max = (category.data?.rooms|| []).length;
       const categoryReservations: Reservation [] = 
         reservations.filter(resa => resa.categoryId === category.id);
-      const available = this.checkAvaibilityEachDay(stay, reservations, max);
+      const available = this.checkAvaibilityEachDay(stay, categoryReservations, max);
       
       if (available) {
       const price =available ? this.computePrice(stay, periods) : 0;
