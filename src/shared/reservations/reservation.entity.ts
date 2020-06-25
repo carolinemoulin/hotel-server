@@ -40,6 +40,9 @@ export class Reservation {
   @Column({name: 'end_date', type: 'date'})
   endDate: string; //'202-06-24'
 
+  @Column()
+  code: string;
+
   @Column({type: 'jsonb'})
   data: ReservationData;
 }
