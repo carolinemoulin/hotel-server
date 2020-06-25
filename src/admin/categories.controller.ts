@@ -1,7 +1,7 @@
 import { Controller, Get, Post, ParseIntPipe, Param, Body, Put, HttpStatus, HttpCode, Delete, UsePipes, ValidationPipe } from '@nestjs/common';
-import { Category } from './category.entity';
-import { CategoriesService } from './categories.service';
-import { CategoryDto } from './category.dto';
+import { Category } from '../shared/categories/category.entity';
+import { CategoriesService } from '../shared/categories/categories.service';
+import { CategoryDto } from '../shared/categories/category.dto';
 
 @Controller('admin/categories')
 @UsePipes(new ValidationPipe({whitelist: true, forbidNonWhitelisted: true, transform: true}))
