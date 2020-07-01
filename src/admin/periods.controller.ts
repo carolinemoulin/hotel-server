@@ -9,7 +9,6 @@ import { ApiQuery } from '@nestjs/swagger';
 export class PeriodsController {
 
   constructor(private periodsSrv: PeriodsService) {
-    this.periodsSrv = periodsSrv;
   }
 
   @Get() // /admin/periods?/category=3&start=2020-06-24&end=2020-07-02

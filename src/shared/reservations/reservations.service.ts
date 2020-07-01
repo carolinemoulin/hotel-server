@@ -60,7 +60,7 @@ export class ReservationsService {
         // Catégorie demandée
         const category: Category = await this.categoriesSrv.readOne(categoryId);
         if (category.persons < persons) {
-            throw new HttpException('Room too small.', 
+            throw new HttpException('Chambre trop petite.', 
                                     HttpStatus.PRECONDITION_FAILED);
         }
         // Périodes de prix (de la catégorie demandée) qui chevauchent les dates du séjour
@@ -87,7 +87,7 @@ export class ReservationsService {
                 data: reservationData
             });
         } else {
-            throw new HttpException('No room left in this category.', 
+            throw new HttpException('Plus de chambre de cette catégorie disponible.', 
                                     HttpStatus.PRECONDITION_FAILED);
         }
     }
@@ -100,7 +100,7 @@ export class ReservationsService {
         if (resa) {
           return this.reservationRepository.remove(resa);
         } else {
-          throw new HttpException('Reservation not found, code may be wrong.', HttpStatus.NOT_FOUND)
+          throw new HttpException('Réservation non trouvée, le code est peut-être erroné.', HttpStatus.NOT_FOUND)
         }
       }
 

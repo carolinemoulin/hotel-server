@@ -8,7 +8,6 @@ import { CategoryDto } from '../shared/categories/category.dto';
 export class CategoriesController {
 
   constructor(private categorydb: CategoriesService) {
-    this.categorydb = categorydb;
   }
 
   @Get()
